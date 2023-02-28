@@ -34,12 +34,12 @@ public class Main {
 
     private static void question2(){
         System.out.println("Question 2: ");
-        int[] arr = new int[200000000];
+        double[] arr = new double[100000000];
 
         generateValue(arr);
         // System.out.println(Arrays.toString(arr));
         // parallel calculation
-        int[][] subarrays = divideArray(arr, NUM_THREADS);
+        double[][] subarrays = divideArray(arr, NUM_THREADS);
 
         Thread[] threads = new Thread[NUM_THREADS];
         SumTask[] tasks = new SumTask[NUM_THREADS];
@@ -95,16 +95,18 @@ public class Main {
         System.out.println("Time difference is: " + (timeTakenSerial - timeTakenparallel) + " ms");
     }
 
-    private static void generateValue(int[] arr){
+    private static void generateValue(double[] arr){
         Random rd = new Random();
 
         for(int i = 0; i < arr.length; i++){
             arr[i] = rd.nextInt(10);
+            double randomNumber = 0.1 + (0.9 - 0.1) * rd.nextDouble();
+            arr[i] *= randomNumber;
         }
     }
 
-    private static int[][] divideArray(int[] arr, int numParts) {
-        int[][] subarrays = new int[numParts][];
+    private static double[][] divideArray(double[] arr, int numParts) {
+        double[][] subarrays = new double[numParts][];
 
         int chunkSize = arr.length / numParts;
         int leftover = arr.length % numParts;
@@ -128,10 +130,10 @@ class MyThread implements Runnable {
 
 
 class SumTask implements Runnable {
-    private int[] arr;
+    private double[] arr;
     private long sum;
 
-    public SumTask(int[] arr) {
+    public SumTask(double[] arr) {
         this.arr = arr;
         this.sum = 0;
     }
